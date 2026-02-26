@@ -365,25 +365,25 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
     }
   }
 
-  Future<void> _changeCountry() async {
+  Future<void> _changeCountry({required double flagSize}) async {
     filteredCountries = _countryList;
     await showDialog(
       context: context,
       useRootNavigator: false,
       builder: (context) => StatefulBuilder(
         builder: (ctx, setState) => CountryPickerDialog(
-          languageCode: widget.languageCode.toLowerCase(),
-          style: widget.pickerDialogStyle,
-          filteredCountries: filteredCountries,
-          searchText: widget.searchText,
-          countryList: _countryList,
-          selectedCountry: _selectedCountry,
-          onCountryChanged: (Country country) {
-            _selectedCountry = country;
-            widget.onCountryChanged?.call(country);
-            setState(() {});
-          },
-        ),
+            languageCode: widget.languageCode.toLowerCase(),
+            style: widget.pickerDialogStyle,
+            filteredCountries: filteredCountries,
+            searchText: widget.searchText,
+            countryList: _countryList,
+            selectedCountry: _selectedCountry,
+            onCountryChanged: (Country country) {
+              _selectedCountry = country;
+              widget.onCountryChanged?.call(country);
+              setState(() {});
+            },
+            flagSize: flagSize),
       ),
     );
     if (mounted) setState(() {});
@@ -465,7 +465,7 @@ class _IntlPhoneFieldState extends State<IntlPhoneField> {
         decoration: widget.dropdownDecoration,
         child: InkWell(
           borderRadius: widget.dropdownDecoration.borderRadius as BorderRadius?,
-          onTap: widget.enabled ? _changeCountry : null,
+          onTap: widget.enabled ? () => _changeCountry(flagSize: effectiveFlagSize) : null,
           child: Padding(
             padding: widget.flagsButtonPadding,
             child: Row(
